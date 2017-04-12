@@ -1,0 +1,35 @@
+var path = [],
+    temp = [];
+function FindPath(root, expectNumber)
+{
+    if(root === null){
+        return [];
+    }
+    calc(root,expectNumber);
+    return path;
+}
+
+function calc(root,expectNumber){
+    temp.push(root.val);
+    // 遍历到最后叶子节点才push，否则不push
+    // 这里不能写===,写全等就会返回[],原因：==情况下null == undefined, ===情况下null !== undefined
+    // 这里 == 写null和undefined都可以   ===下面只能写undefined
+    if(root.val === expectNumber && root.left === undefined && root.right === undefined) {
+        path.push(temp.slice());
+    }else {
+        if(root.left!=null) {
+            calc(root.left,expectNumber-root.val);
+        }
+        if(root.right!=null)   {
+            calc(root.right,expectNumber-root.val);
+        }
+    }
+    temp.pop();
+}
+
+var root = {val:1,left:{val:2,left:{val:1}},right:{val:3}};
+console.log(root)
+console.log(FindPath(root,4))
+
+var root = {val:1};
+console.log(root.left)

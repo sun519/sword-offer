@@ -1,0 +1,56 @@
+// 判断对象的数据类型
+var judge = function(o) {
+    if(o === null) {
+        return "Null";
+    }
+    if(o === undefined) {
+        return "Undefined";
+    }
+    // 即取出除了“[object ”的字符串。 例:如“[object Array]”,截取的就是Array,slice中第二个参数如果是负数，那么是从数组尾部开始算起的元素。这里的-1就是“[object Array]”中的y
+    return Object.prototype.toString.call(o).slice(8,-1);
+}
+
+function deepClone(obj) {
+    var result;
+    var oResult = judge(obj);
+    if(oResult === "Object") {
+        result = {};
+    }else if(oResult === "Array") {
+        result = [];
+    }else { // 这种情况就是function
+        return obj;
+    }
+
+    // 遍历对象中的所有属性,由于每个属性的类型都不一样,如果是对象类型就照对象类型克隆,如果是数组类型就照数组类型克隆等等
+    for(var key in obj){
+       var copy=obj[key];
+       if(judge(copy)=="Object"){
+           result[key]=arguments.callee(copy);//这里有个缺陷,严格模式下会出错。因为严格模式下不允许调用arguments.callee。这时可以替换成//result[key]=copy;
+        }else if(judge(copy)=="Array"){
+           result[key]=arguments.callee(copy);
+       // 由于基本数据类型存储的是对象的实际数据，因此我们可以通过简单的复制方式即可得到正确的结果，而且不影响之前的对象。
+       // 由于函数对象克隆之后的对象会单独复制一次并存储实际数据，因此并不会影响克隆之前的对象。所以采用简单的复制“=”即可完成克隆。
+        }else{
+           result[key]=obj[key]; // 这种情况包含5种基本数据类型 number,string,boolean,null,undefined和一种对象类型 Function
+        }
+    }
+    return result;    
+}
+
+var o=[1,"str",true,null,undefined,[3,4],{a:1}];
+var o2 = deepClone(o);
+console.log(o2);
+o2[5].push(10);
+o2[6].b=2;
+// 下面两个打印能看到明显的差别，o2没有影响到o
+console.log(o2);
+console.log(o);
+
+/*
+var schedule = {"status":21,"msg":"ok","test1":null,"test2":undefined,"data":[{"name":"lemon","age":21,"contactList":{"phone":[152,153,154],"email":5295}},{"name":"lara","age":22,"contact":{"phone":152,"email":5295}}]}  
+ 
+console.log(deepClone(schedule));
+console.log(typeof schedule);
+console.log(schedule.data instanceof Object );
+console.log(schedule.data instanceof Array );
+*/

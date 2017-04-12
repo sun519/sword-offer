@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" Content="text/html; charset=utf-8;">
+<title>移动端触摸滑动</title>
+<meta name="author" content="rainna" />
+<meta name="keywords" content="rainna's js lib" />
+<meta name="description" content="移动端触摸滑动" />
+<meta name="viewport" content="width=640,user-scalable=no">
+<style>
+.test {
+    width:500px;height:500px;background: yellow;
+}
+</style>
+</head>
+
+<body>
+<div class="m-slider">
+    <div class="icons" id="icons">
+        <span class="curr">1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+    <div class="test" id="t2"></div>
+</div>
+
+<script>
+
+
+// 跨浏览器事件对象
+var EventUtil = {
+    addHandler: function(element, type, handler) {
+        // DOM2级事件监听
+        if(element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        // IE事件监听
+        }else if(element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        // IE8及更早版本监听
+        }else {
+            element["on" + type] = handler;
+        }
+    },
+    removeHandler: function(element, type, handler) {
+        if(element.removeEventListener) {
+            element.removeEventListener(type, handler, false)
+        }else if(element.detachEvent) {
+            element.detachEvent("on" + type, handler);
+        }else {
+            element["on" + type] = handler;
+        }
+    },
+    preventDefault: function(event) {
+        if(event.preventDefault) {
+            event.preventDefault();
+        }else {
+            event.returnValue = false;
+        }
+    },
+    stopPropagation: function(event) {
+        if(event.stopPropagation) {
+            event.stopPropagation();
+        }else {
+            event.cancelBubble = true;
+        }
+    },
+    // 获取事件对象引用
+    getEvent: function(event) {
+        return event ? event : window.event;
+    },
+    // 获取事件目标
+    getTarget: function(event) {
+        // 短路表达式
+        return event.target || event.srcElement;
+    }
+};
+
+var startPosition, endPosition, deltaX, deltaY, moveLength;
+function start(e) {
+    // touches是记录的触摸的点数，一个点为一个对象
+    var touch = e.touches[0];
+    startPosition = {
+        x: touch.pageX,
+        y: touch.pageY
+    }
+}
+
+function move(e) {
+    var touch = e.touches[0];
+    endPosition = {
+        x: touch.pageX,
+        y: touch.pageY
+    };
+    deltaX = endPosition.x - startPosition.x;
+    deltaY = endPosition.y - startPosition.y;
+    // 两点之间的欧式距离
+    moveLength = Math.sqrt(Math.pow(Math.abs(deltaX),2) + Math.pow(Math.abs(deltaY),2));
+}
+
+// 在这个函数里面写一些滑动后的响应事件
+function end(e) {
+    if(deltaX < -20 || deltaX > 20) {
+        alert("ok");
+        // do something
+    }
+    EventUtil.preventDefault(e);
+}
+
+// 原生js好像不能通过类名来绑定事件只能通过id
+// var target = document.getElementsByClassName("test");
+var target = document.getElementById("t2");
+    EventUtil.addHandler(target, "touchstart", start);
+    EventUtil.addHandler(target, "touchmove", move);
+    EventUtil.addHandler(target, "touchend", end);
+
+
+
+</script>
+</body>
+</html>

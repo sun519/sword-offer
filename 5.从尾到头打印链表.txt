@@ -1,0 +1,24 @@
+function printListFromTailToHead(head)
+{
+    // 用函数表达式来创建函数必须在调用前创建，否则会报错。用函数声明创建的话不存在这个问题，它有一个自动提升的机制,在执行代码前会先读取函数声明(闭包情况下慎用函数声明??)
+    // ListNode表示要加入列表的项，它包含一个val属性以及一个next属性，val表示要添加到列表的值，next表示指向列表下一个节点项的指针。
+    var ListNode = function(x) { // 函数表达式写法 
+        this.val = x;
+        this.next = null;
+    }
+
+    /* 函数声明写法
+    function ListNode(x) {
+        this.val = x;
+        this.next = null;
+    }
+     */
+
+    var res = [];
+    while(head != null) {
+        // 头插
+        res.unshift(head.val);
+        head = head.next;
+    }
+    return res;
+}

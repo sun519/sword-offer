@@ -1,0 +1,64 @@
+方法一:特殊技巧
+var arr = [[1,2,8,9],[2,4,9,12],[4,7,10,13]];
+console.log(arr.length); // 获取二维数组第一维的长度 这里是3
+console.log(arr[0].length);// 获取二维数组的第二维的长度 这里也可以是arr[1].length 这里是4
+
+var xAxis = arr.length,
+    yAxis = arr[0].length;
+var flag = false;
+function test(num) {
+    var x = 0,
+        y = yAxis - 1;
+    if(num !== null && xAxis > 0 && yAxis > 0) {
+        while(x < xAxis && y >= 0) {
+            if(arr[x][y] === num) {
+                flag = true;
+                console.log(flag); // 这句话要在return前打印，如果放在return后面,return是直接退出当前函数，后面就不执行了,自然结果也打印不出来了
+                return flag; // return是跳出当前函数 而break是跳出当前循环，这里写return下面的的一个console就不会打印，如果写break的话下面一个console就会打印
+                //break;
+            }else if(arr[x][y] > num) {
+                y--;
+            }else {
+                x++;
+            }
+        }
+    }
+    console.log(flag);
+    return flag;
+}
+test(1);
+
+
+
+// return的理解 return如果有返回值并不会打印出来,必须用console.log()或者alert来显示出来,下面是个例子
+function add(a, b){
+    return a + b;
+}
+console.log(add(6, 7));//15
+
+//方法二:for循环遍历
+var arr = [[1,2,8,9],[2,4,9,12],[4,7,10,13]];
+console.log(arr.length); // 获取二维数组第一维的长度 这里是3
+console.log(arr[0].length);// 获取二维数组的第二维的长度 这里也可以是arr[1].length 这里是4
+
+var xAxis = arr.length,
+    yAxis = arr[0].length;
+var flag = false;
+function test(num) {
+    for(var i = 0;i<arr.length;i++) {
+        for(var j = 0;j<arr[0].length;j++) {
+            if(arr[i][j] === num) {
+                flag = true;
+                console.log(flag);
+                return flag;
+            }
+        }
+    }
+    console.log(flag);
+    return flag;
+}
+
+console.time("t");//这是测试函数执行所花时间的
+test(1);
+console.timeEnd("t");
+

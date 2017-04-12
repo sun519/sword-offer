@@ -1,0 +1,84 @@
+
+var tree = {
+ value: 1,
+ left: {
+  value: 2,
+  left: {
+   value: 4
+  }
+ },
+ right: {
+  value: 3,
+  left: {
+   value: 5,
+   left: {
+    value: 7
+   },
+   right: {
+    value: 8
+   }
+  },
+  right: {
+   value: 6
+  }
+ }
+}
+console.log(tree);
+
+/*
+// 广度优先
+var bfs = function(node) {
+    if(!node) {
+        throw new Error("empty tree");
+    }
+    var que = [];
+    var arr = [];
+    que.push(node);
+    console.log(que.length);
+    while(que.length !== 0) {
+        node = que.shift(); // 从头部取值
+        arr.push(node.value);
+        if(node.left) {
+            que.push(node.left);
+        }
+        if(node.right) {
+            que.push(node.right);
+        }
+    }
+    return arr;
+}
+console.log(bfs(tree));
+*/
+
+//深度优先递归写法(以先序遍历为例)
+var dfs = function(node) {
+    if(node) {
+        console.log(node.value);// 写在这里是先序遍历
+        dfs(node.left);
+        // console.log(node.value);// 写在这里是中序遍历
+        dfs(node.right);
+        // console.log(node.value);// 写在这里是后序遍历             
+    }  
+}
+console.log(dfs(tree));
+
+// 深度优先非递归算法(栈来实现)
+var dfs = function(node) {
+    if(!node) {
+        throw new Error("empty tree");
+    }
+    var stack = [];
+    stack.push(node);
+    while(stack.length !== 0) {
+        node = stack.pop(); // 从尾部取值
+        console.log(node.value);
+        // 先写node.right后写node.left,因为栈是后进先出
+        if(node.right) {
+            stack.push(node.right);
+        }
+        if(node.left) {
+            stack.push(node.left);
+        }
+    }
+}
+console.log(dfs(tree));

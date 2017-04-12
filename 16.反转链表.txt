@@ -1,0 +1,23 @@
+// 这里需要明确的是反转链表不涉及数值的交换，只涉及指针的方向改变
+// 例:1->2->3->4->5变成1<-2<-3<-4<-5这里只改变指针方向 而不是说变成5->4->3->2->1这里是数字位置变了指针方向没变。这两者注意区分
+function ReverseList(pHead) {
+    // 如果链表为空 返回返回false
+    if(pHead === null) {
+        return false;
+    }
+    // 定义三个变量 当前节点p1,定义pro为p1的前一个节点，temp临时存储当前节点p1的下一个节点
+    var p1 = pHead;
+    var pre = null;
+    var temp = null;
+    // 这里千万不要写p.next === null,这么写输出长度在原来长度基础上-1
+    while(p1 != null) {
+        temp = p1.next;
+        // 反转当前节点指针方向（指向当前节点的前一个节点）
+        p1.next = pre;
+        // pro、p1向后移动,继续再反转后面的指针
+        pre = p1;
+        p1 = temp;
+    }
+    return pre;
+}
+console.log(ReverseList({1,2,3,4,5}))

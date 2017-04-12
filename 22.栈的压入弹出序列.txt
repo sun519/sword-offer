@@ -1,0 +1,17 @@
+// 原理：模拟堆栈操作，将pushV给的数字按顺序执行入栈操作，入栈过程中的栈顶元素与出栈队列相比，如果相同就出栈，不同就继续入栈，直到pushV给的数字全部入完
+// 检测模拟堆栈的长度是否为0,若是0说明出栈队列可由原数列的栈操作得到。堆栈长度不为0的话说明出栈队列不能由原数列进行栈操作得到。
+function IsPopOrder(pushV, popV) {
+    if(pushV.length === 0 || popv.length === 0) {
+        return false;
+    }
+    var arr = [];
+    var j = 0;
+    for(var i = 0; i < pushV.length; i++) {
+        arr.push(pushV[i]);
+        while(j < popv.length && arr[arr.length - 1] === popV[j]) {
+            arr.pop();
+            j++;
+        }
+    }
+    return arr.length === 0 ? true : false;
+}

@@ -1,0 +1,78 @@
+
+var root = {
+ value: 1,
+ left: {
+  value: 2,
+  left: {
+   value: 4
+  }
+ },
+ right: {
+  value: 3,
+  left: {
+   value: 5,
+   left: {
+    value: 7
+   },
+   right: {
+    value: 8
+   }
+  },
+  right: {
+   value: 6
+  }
+ }
+}
+console.log(root);
+
+
+// 递归实现
+function Mirror(root)
+{
+    var temp;
+    if(root === null) {
+        return;
+    }   
+    if(root.left === null && root.right === null) {
+        return;
+    }   
+    temp = root.left;
+    root.left = root.right;
+    root.right = temp;
+//这是典型的先序遍历的思想，先自己然后向左转移，左边转移完后再邮编转移，对每个点的处理函数就是交换左右指针的指向
+    if(root.left) {
+        Mirror(root.left);
+    }
+    if(root.right) {
+        Mirror(root.right);
+    }
+}
+
+// 非递归版本(栈实现) 也可以用队列来实现
+function Mirror(root)
+{   
+    var stack = [];
+    var temp;
+    if(root === null) {
+        return;
+    }
+    stack.push(root);
+    while(stack.length != 0) {
+        root = stack.pop();
+        if(root.left != null || root.right != null) {
+            temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+        }
+	
+	// 如果这里是深度优先遍历二叉树的话这里要先push right再push left。
+	// 这里仅仅是交换二叉树左右子节点,不用在意顺序
+        if(root.left) {
+            stack.push(root.left);
+        }
+        if(root.right) {
+            stack.push(root.right);
+        }
+    }
+ }
+

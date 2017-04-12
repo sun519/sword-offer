@@ -1,0 +1,36 @@
+var buildTree = function(inorder,postorder) {
+    if(!inorder || !postorder || inorder.length !== postorder.length) {
+        return null;
+    }
+    var hash = {};
+    // 中序遍历每一个节点的索引值存入hash表中,方便后面计算左右子树长度用
+    for(var i = 0; i< inorder.length; i++) {
+        hash[inorder[i]] = i;
+    }
+    return builder(inorder,0,inorder.length-1,postorder,0,postorder.length-1,hash);
+    
+    function TreeNode(val) {
+        this.val = val;
+        this.left = this.right = null;
+    }
+
+    function builder(inorder,is,ie,postorder,ps,pe,hash) {
+        // 如果起始索引 > 结束索引
+        if(is > ie || ps > pe) {
+            return null;
+        }
+        // 后序遍历中的最后一个节点作为根节点
+        var root = new TreeNode(postorder[pe]);
+        // 根节点在中序数组中的索引值
+        var rootIndex = hash[postorder[pe]];
+        // 左子树长度(中序遍历中跟节点左边的元素都是左子树,这样根节点在中序数组中的索引 - 中序数组起始节点的索引 = 左子树长度)
+        var len = rootIndex - is;
+        // 各个参数含义: 中序数组,中序数组左子树起始索引,中序数组左子树结束索引,后序数组,后序数组左子树起始索引,后序数组左子树结束索引,hash表
+        root.left = builder(inorder, is, rootIndex-1, postorder, ps, ps+len-1, hash);
+        // 各个参数含义: 中序数组,中序数组右子树起始索引,中序数组右子树结束索引,后序数组,后序数组右子树起始索引,后序数组右子树结束索引,hash表
+        root.right= builder(inorder, rootIndex+1, ie, postorder, ps+len, pe-1, hash);
+
+        return root;
+    }
+}
+console.log(buildTree([4,2,5,1,6,3,7],[4,5,2,6,7,3,1]))

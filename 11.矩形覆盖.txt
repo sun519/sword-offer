@@ -1,0 +1,35 @@
+// 方法一 非递归
+function rectCover(n)
+{   
+    if(n === 0) {
+        return 0;
+    }
+    if(n === 1 || n === 2) {
+        return n;
+    }
+    var fir = 1,
+        sec = 2;
+        sum = 0;
+    for(var i = 2; i < n; i++) {
+        sum = fir + sec;
+        fir = sec;
+        sec = sum;
+    }
+    return sum;
+}
+console.log(rectCover(5));
+
+// 方法二: 递归(自己调用自己)
+function rectCover(n)
+{   
+    if(n === 0) {
+        return 0;
+    }
+    if(n === 1 || n === 2) {
+        return n;
+    }
+    if(n > 2) {
+        return rectCover(n-1) + rectCover(n-2);
+    }
+}
+console.log(rectCover(5));

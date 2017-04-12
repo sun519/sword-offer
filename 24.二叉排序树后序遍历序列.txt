@@ -1,0 +1,30 @@
+// 递归实现
+var judge = function(arr, start, end) {
+    if(start >= end) {
+        return true;
+    }
+    // 左子树数值判断
+    var i = start;
+    while(arr[i] < arr[end]) {
+        i++;
+    }
+    // 右子树数值判断
+    for(var j = i; j < end; j++) {
+       if(arr[j] < arr[end]) {
+        return false;
+       }
+    }
+    return judge(arr, start, i-1) && judge(arr, i, end-1)
+}
+function VerifySquenceOfBST(sequence)
+{
+    if(sequence.length === 0) {
+        return false;
+    }
+    if(sequence.length === 1) {
+        return true;
+    }
+    return judge(sequence, 0, sequence.length - 1)
+}
+
+console.log(VerifySquenceOfBST([4,8,6,12,16,14,10]))

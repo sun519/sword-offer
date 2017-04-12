@@ -1,0 +1,39 @@
+题目:会输出什么结果？  答案:5,5,5,5,5
+for (var i = 0; i < 5; i++) {
+    setTimeout(function() {
+        console.log(new Date, i);
+    }, 1000);
+}
+
+console.log(new Date, i);
+
+
+修改上面代码使之能顺序输出 0,1,2,3,4
+// 方法一: 函数立即执行来解决闭包造成的问题
+for (var i = 0; i < 5; i++) {
+    (function(j) {
+        setTimeout(function() {
+            console.log(new Date, j);
+        }, 1000);
+    })(i)
+    
+}
+
+
+// 方法二：让负责输出的那部分代码能拿到每次循环的i值，利用js基本类型的参数传递是按值传递的特征
+for(var i = 0; i < 5; i++) {
+    var output = function(j) {
+        setTimeout(function() {
+            console.log(new Date, j);
+        }, 1000);
+    }(i);
+}
+console.log(new Date, i);
+
+
+// 方法三: ES6 let语法
+for (let i = 0; i < 5; i++) {
+    setTimeout(function() {
+        console.log(new Date, i);
+    }, 1000);
+}

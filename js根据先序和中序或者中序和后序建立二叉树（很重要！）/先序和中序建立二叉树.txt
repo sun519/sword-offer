@@ -1,0 +1,38 @@
+var buildTree = function(preorder,inorder) {
+    if(!preorder || !inorder || preorder.length !== inorder.length) {
+        return null;
+    }
+    var hash = {};
+    // 中序遍历每一个节点的索引值存入hash表中,方便后面计算左右子树长度用
+    for(var i = 0; i < inorder.length; i++) {
+        hash[inorder[i]] = i;
+    }
+    return builder(preorder,0,preorder.length-1,inorder,0,inorder.length-1,hash);
+
+    function TreeNode(val) {
+        this.val = val;
+        this.left = this.right = null;
+    }
+    // 这里的 is,ie,ps,pe都是索引值
+    function builder(preorder,ps,pe,inorder,is,ie,hash) {
+        if(ps > pe || is > ie) {
+            return null;
+        }
+        // 先序遍历中的第一个点作为根节点
+        var root = new TreeNode(preorder[ps]);
+        // 根节点在中序遍历中的索引值
+        var rIndex = hash[preorder[ps]];
+        // 左子树的长度(因为中序遍历中根节点的左边为左子树,这样根节点在中序遍历中的索引 - 中序遍历的起始节点索引 = 左子树的长度)
+        var len = rIndex - is;
+        console.log(inorder, is, rIndex - 1, preorder, ps + 1, ps + len, hash);
+        console.log(preorder, ps+len+1, pe, inorder, rIndex+1, ie, hash);
+        // 递归建立左子树和右子树
+        // 各个参数含义: 先序数组,先序数组左子树起始索引,先序数组左子树结束索引,中序数组，中序数组左子树起始索引,中序数组左子树结束索引,hash表
+        root.left = builder(preorder, ps+1, ps+len, inorder, is, rIndex-1, hash);
+        // 各个参数含义: 先序数组,先序数组右子树起始索引,先序数组右子树结束索引,中序数组，中序数组右子树起始索引,中序数组右子树结束索引,hash表
+        root.right = builder(preorder, ps+len+1, pe, inorder, rIndex+1, ie, hash);
+
+        return root;
+    }
+};
+console.log(buildTree([1,2,4,5,3,6,7],[4,2,5,1,6,3,7]))

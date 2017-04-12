@@ -1,0 +1,23 @@
+// 原理 利用数组和队列 (详细请参考深度优先和广度优先例子)
+// 首先先把root这个对象push到queue中,然后再取出来并获取这个对象的value值。然后再判断如果这个对象有left或者right分别push,依照队列先进先出的特性,首先出来的是left然后right
+function PrintFromTopToBottom(root)
+{
+    var arr = [];
+    var queue = [];
+    if(!root) {
+        return [];
+    }
+    queue.push(root);
+    while(queue.length != 0) {
+        // 这里shift是把当前这个对象取出来了,取出后数组就是空了
+        root = queue.shift();
+        arr.push(root.val);
+        if(root.left) {
+            queue.push(root.left);
+        }
+        if(root.right) {
+            queue.push(root.right);
+        }
+    }
+    return arr;    
+}

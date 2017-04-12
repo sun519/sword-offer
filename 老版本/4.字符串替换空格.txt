@@ -1,0 +1,45 @@
+//方法一 正则（测试结果表明，正则时间效率最高）
+function replaceSpace(str)
+{   
+    // \s+标上尽可能多的匹配  \s表示只匹配一次  例子:we   are  这里用\s写会是we%20%20%20are,用\s+写会是we%20are
+    return str.replace(/\s+/g,"%20")
+}
+console.log(replaceSpace("We Are Happy"))
+
+
+// 方法二:函数带参数写法
+function replaceSpace(str)
+{   var arr = [];
+    for(var i = 0; i < str.length;i++) {
+        if(str[i] === " ") {
+            arr.push("%20");
+            continue;
+        }
+        arr.push(str[i]);
+    }
+    var s = arr.join("");
+    return s;
+}
+console.log(replaceSpace("We  Are Happy"))
+
+
+
+// 方法三: this写法(这个不带参数,通过给数组原型添加一个新的方法实现去空格)
+// 注意this的用法,函数只有被调用才能使用this。注意与上一种写法区别  这是给String原型新添加一个repl方法,后面只要是字符串变量直接调用这个方法就可以了。因为这个函数被某个字符串变量调用了，所以this指向调用的该字符串变量，这才是this的真正用法
+String.prototype.repl = function() {
+    var arr = [];
+    for(var i = 0;i < this.length;i++) {
+        if(this[i] === " ") {
+            arr.push("");
+        }else {
+            arr.push(this[i]);
+        }
+    }
+    var str = arr.join("");// 不写的话默认以逗号分隔
+    console.log(str);
+}
+
+var test = 'hello word nnew';
+//这里test调用repl方法,所有this指向test
+test.repl();
+

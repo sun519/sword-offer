@@ -1,0 +1,58 @@
+function minNumberInRotateArray(num) {
+    if (num == null || num.length == 0) {
+            return 0;
+    }
+    if (num.length == 1) {
+        return num[0];
+    }
+    var start = 0, 
+        end = num.length - 1;
+    while (start < end) {
+        var mid = Math.floor((start + end) / 2);
+        if (mid > 0 && num[mid] < num[mid - 1]) {
+            return num[mid];
+        }
+        // 目标数据在mid右侧(右侧递增子数组长度 < 左侧递增子数组)
+        if (num[start] <= num[mid] && num[mid] > num[end]) {
+            start = mid + 1;
+        // 目标数据在mid左侧(右侧递增子数组长度 > 左侧递增子数组)
+        } else {
+            end = mid - 1;
+        }
+        if(num[start] === num[mid] && num[end] === num[mid]) {
+            return MinOrder();
+        }
+    }
+
+    function MinOrder() {
+        var min = num[0];
+        for(var i = 0; i < num.length; i++) {
+            if(num[i] < min) {
+                min = num[i];
+            }
+        }
+        return min;
+    }
+
+    return num[start];
+
+
+}
+console.log(minNumberInRotateArray([0,1,1,1]))
+
+// 方法二
+var findMin = function(nums) {
+    var l = 0, r = nums.length-1;
+     while (l < r) {
+         var mid = Math.floor((l + r) / 2);
+         if (nums[mid] < nums[r]) {
+             r = mid;
+         } else if (nums[mid] > nums[r]){
+             l = mid + 1;
+         } else {  
+             r--;  //nums[mid]=nums[r] no idea, but we can eliminate nums[r];
+         }
+     }
+     return nums[l];
+};
+console.log(findMin([1,0,1,1,1]))

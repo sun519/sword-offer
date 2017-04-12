@@ -1,0 +1,27 @@
+// 只遍历一次 时间复杂度o(n)  原理:倒数第k个只要设定两个指针间隔k-1即可，这样前面一个指针遍历到最后一个的时候另外一个指针自然而然指向倒数第k个
+// 方法 双指针  初始设定两个指针在头节点，p1指针先走到k-1位置，然后再让p2,p1指针同步向后移动。当p1移动到最后一个节点时,此时p2指针就是指的倒数第k个节点
+function findKthToTail(head,k) {
+
+    function ListNode(x) {
+        this.val = x;
+        this.next = null;
+    }
+
+    if(head === null || k < 0) {
+        return false;
+    }
+    var p1 = head,
+        p2 = head;
+    for(var i = 0; i < k-1; i++) {
+        if(p1.next != null) {
+            p1 = p1.next;
+        }else {
+            return false;
+        }
+    }
+    while(p1.next != null) {
+        p1 = p1.next;
+        p2 = p2.next;
+    }
+    return p2;
+}

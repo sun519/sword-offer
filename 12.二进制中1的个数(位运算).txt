@@ -1,0 +1,15 @@
+//思想：用flag=1（1自身左移运算，10,100,1000,......）和n的每位进行位与，来判断1的个数
+// 这里不用将n转换为2进制，计算机默认是进行二进制运算的
+function num(n) {
+    var flag = 1,
+        sum = 0;
+    // 这么写的原因是flag初始值是1，按位左移后面补0,若n是4位，左移四次时会是10000，最左边一位被丢弃结果是0000，所以flag === 0;
+    while(flag != 0) { // 也可以写成 while(flag), 因为flag === 0时才为false
+        if(n & flag) {
+            sum++;
+        }
+        flag = flag << 1;
+    }
+    return sum;
+}
+console.log(NumberOf1(11));

@@ -1,0 +1,33 @@
+// 原理：新建两个栈，模拟队列入队时，将元素逐个push到stack1。模拟出队时，先将stack1每pop出一个元素就push到stack2，然后再stack2 pop就是队列的顺序。
+var Stack = function() {
+    var arr = [];
+    this.push = function(node) {
+        arr.push(node);
+        return arr;
+    }
+    this.pop = function() {
+        return arr.pop();
+    }
+    this.isEmpty = function() {
+        return arr.length === 0;
+    }
+}
+
+var stack1 = new Stack();
+var stack2 = new Stack();
+
+function push(node) {
+    stack1.push(node)
+}
+
+function pop() {
+    if(stack1.isEmpty() && stack2.isEmpty()) {
+        throw new Error("empty queue");
+    }
+    if(stack2.isEmpty()) {
+        while(!stack1.isEmpty()) {
+            stack2.push(stack1.pop());
+        }
+    }
+    return stack2.pop();
+}

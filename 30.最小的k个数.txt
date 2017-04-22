@@ -1,0 +1,27 @@
+// 方法一 冒泡排序的思想，只不过最外层循环K次就可以了，也就是说不用全部排序，只挑出符合提议的K个就可以
+function GetLeastNumbers_Solution(input, k) {
+    var temp,
+        sum = 0;
+    if(k === 0 || k > input.length) {
+        return []; 
+    }
+    for(var i = input.length - 1; i >= 0; i++) {
+        if(sum === k) {
+            function up(a,b) {
+                return a - b;
+            }
+            return input.slice(-4).sort(up);
+        }
+        for(var j = 0; j < i; j++) {
+            if(input[j] < input[j+1]) {
+                temp = input[j];
+                input[j] = input[j+1];
+                input[j+1] = temp;
+            }
+        }
+    sum++;
+    }
+    
+}
+
+console.log(GetLeastNumbers_Solution([4,5,1,6,2,7,3,8],4))

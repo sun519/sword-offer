@@ -1,0 +1,69 @@
+// 方法一 ：拼接数组排序
+function PrintMinNumber(arr) {
+    var len = arr.length;
+    if(arr === null || arr.length === 0) {
+        return "";
+    }
+    /* 原理:因为a,b有可能长度不一样例如 a = 3, b = 24,所以两个数拼起来才能比较大小 a+b=324,b+a=243,所以a > b
+       排序规则：
+       若ab > ba 则 a > b，
+       若ab < ba 则 a < b，
+       若ab = ba 则 a = b；
+    */
+    function compare(a,b) {
+        var num1 = "" + a + b,
+            num2 = "" + b + a;
+        return parseInt(num1) - parseInt(num2);
+    }
+    arr.sort(compare);
+    console.log(arr);
+    var result = "";
+    for(var i = 0; i < arr.length; i++) {
+        // 字符串和数字相加数字会自动先转成字符串然后再拼接
+        result += arr[i]
+    }
+    return parseInt(result);
+}
+console.log(PrintMinNumber([32,3,321]))
+
+// 方法二 全排序 参考28面试题
+function PrintMinNumber(arr) {
+    var result = [];
+    if(arr.length === 0) {
+        return [];
+    }
+    var concat = "",
+        res = [];
+    result = sortNum(arr,concat,res);
+    return ChooseMin(result);
+}
+
+function sortNum(arr,concat,res) {
+    if(arr.length === 0) {
+        var num = parseInt(concat);
+        res.push(num);
+    }else {
+        var hash = {};
+        for(var i = 0; i < arr.length; i++) {
+            if(!hash[arr[i]]) {
+                var temp = arr.splice(i,1)[0];
+                concat += temp;
+                sortNum(arr,concat,res);
+                arr.splice(i,0,temp);
+                concat = concat.slice(0,concat.length-temp.toString().length);
+                hash[temp] = true;
+            }
+        }
+    }
+    return res;
+}
+
+function ChooseMin(arr) {
+    var min = arr[0];
+    for(var i = 1; i < arr.length; i++) {
+        if(min > arr [i]) {
+            min = arr[i];
+        }
+    }
+    return min;
+}

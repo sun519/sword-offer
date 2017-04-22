@@ -1,0 +1,61 @@
+// 方法一 位数判断  时间复杂度o(logN)
+function nums1(n) {
+    if(n <= 0) {
+        return 0;
+    }
+    var high = n,
+        low,
+        temp,
+        cur,
+        num = 0,
+        i = 1;
+    // 从低位到高位依次循环判断
+    while(high != 0) {
+        // 当前数n取整
+        high = parseInt(n/Math.pow(10,i));
+        // n取余
+        temp = n%Math.pow(10,i);
+        // 余数取整
+        cur = parseInt(temp/Math.pow(10,i-1));
+        // 余数取余
+        low = temp%Math.pow(10,i-1);
+        // 如果当前位数是1
+        if(cur === 1) {
+            // 例：2512 计算十位1出现的次数  从1到2500中，包含25个100,因此任意x出现次数为25*10 = 250,剩下的12因为十位1=1，因此找靠近10位右边的低位(low)个位来判断，个位是2，因此十位1出现次数是3(10,11,12)次，因此总和为 250 + 2 + 1 = 253
+            num += high*Math.pow(10,i-1) + low + 1;
+            // 如果当前位数大于1
+        }else if(cur > 1) {
+            // 例:2591  计算十位1出现的次数  从1到2500中，包含25个100,因此任意x出现次数为25*10 = 250,剩下的91因为十位9>1，因此出现次数也是10次，得到十位1出现次数250+10 =260
+            num += high*Math.pow(10,i-1) + Math.pow(10,i-1);
+            // 如果当前位数小于1
+        }else if(cur < 1) {
+            // 例:2501  计算十位1出现的次数  从1到2500中，包含25个100,因此任意x出现次数为25*10 = 250,剩下的01因为十位0<1，因此出现次数是0次，得到十位1出现次数250+0 =250
+            num += high*Math.pow(10,i-1);
+        }
+        i++;
+    }
+    return num;
+}
+console.log(nums1(13))
+/*
+// 方法二 暴力遍历取余判断 时间复杂度o(n)
+function NumberOf1Between1AndN_Solution(n)
+{
+    var number = 0;
+    for(var i = 1; i <= n; i++) {
+        number += Numberof1(i);
+    }
+    return number;
+   function Numberof1(n){
+       var number = 0;
+       while(n){
+           if(n%10==1){
+               number++;
+           }
+           n=Math.floor(n/10);
+       }
+       return number;
+   }
+}
+console.log(NumberOf1Between1AndN_Solution(13))
+*/

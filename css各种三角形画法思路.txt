@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" Content="text/html; charset=utf-8;">
+<title>移动端触摸滑动</title>
+<meta name="author" content="rainna" />
+<meta name="keywords" content="rainna's js lib" />
+<meta name="description" content="移动端触摸滑动" />
+<meta name="viewport" content="width=640,user-scalable=no">
+<style>
+
+/*三角产生的原理由t1 - t2可看出来 四个角区域的颜色右相邻两个区域各出一半的颜色*/
+.t1 {
+    width: 100px;
+    height: 100px;
+    border-left: 100px solid green;
+    border-right: 100px solid yellow;
+    border-bottom: 100px solid red;
+    border-top: 100px solid blue;
+}
+.t2 {
+    width: 0;
+    height: 0;
+    border-left: 100px solid green;
+    border-right: 100px solid yellow;
+    border-bottom: 100px solid red;
+    border-top: 100px solid blue;
+}
+/* 上三角(箭头向上),只与左下右三块区域有关 左右设置透明,底部不变即可   归纳:朝那个方向css就不设置那个方向即可*/
+.t3 {
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 100px solid red;
+}
+/* 下三角(箭头向下),只与左上右三块区域有关 */
+.t4 {
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 100px solid red;
+}
+/* 左三角(箭头向左),只与上下右三块区域有关 */
+.t5 {
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid transparent;
+    border-right: 100px solid red;
+    border-top: 100px solid transparent;
+}
+/* 右三角(箭头向右),只与上下左三块区域有关 */
+.t6 {
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid transparent;
+    border-left: 100px solid red;
+    border-top: 100px solid transparent;
+}
+/* 下右边直角三角(在t2基础上),只与下右两块区域有关 其余区域设置透明即可*/
+.t7 {
+    width: 0;
+    height: 0;
+    border-left: 100px solid green;
+    border-right: 100px solid transparent;
+    border-bottom: 100px solid red;
+    border-top: 100px solid transparent;
+}
+/* 下右边直角三角方案二(在t2基础上,t2的下与右交集区域)右区域设置透明即可 这里宽度只有上一个方案宽度的一半*/
+.t8 {
+    width: 0;
+    height: 0;
+    border-right: 100px solid transparent;
+    border-bottom: 100px solid red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="t1"></div>
+<div class="t2"></div>
+<div class="t3"></div>
+<div class="t4"></div>
+<div class="t5"></div>
+<div class="t6"></div>
+<div class="t7"></div>
+<div class="t8"></div>
+
+<script>
+</script>
+</body>
+</html>

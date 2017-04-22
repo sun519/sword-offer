@@ -1,0 +1,31 @@
+function Parent(age) {
+    this.age = age;
+}
+Parent.prototype.sayAge = function() {
+    console.log(this.age);
+}
+
+function Child(name,age) {
+    this.name = name;
+    Parent.call(this,age);
+}
+Child.prototype = new Parent();
+Child.prototype.constructor = Child;
+Child.prototype.sayName = function() {
+    console.log(this.name)
+}
+var c = new Child("sun",18);
+
+// instanceof 判断对象是否为另外一个对象的实例
+console.log(c instanceof Child)// true
+console.log(c instanceof Parent)// true
+// isPrototypeOf 判断一个对象是不是一个实例的原型
+console.log(Child.prototype.isPrototypeOf(c)) // true
+console.log(Parent.prototype.isPrototypeOf(c)) // true
+// 判断对象是否有一个自身的属性并不是继承来的
+console.log(Child.hasOwnProperty("name")); // true
+console.log(Child.hasOwnProperty("age")); // false
+
+
+c.sayName()
+c.sayAge()

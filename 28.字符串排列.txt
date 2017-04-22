@@ -1,0 +1,40 @@
+/*
+递归思想：把大问题转换为若干小问题；
+n个元素的全排列 = （n-1） 个元素全排列 + 一个元素作为前缀。
+递归的出口：只有一个元素的全排列，此时排序完成，输出数组。
+遍历字符串，将每个字符放在第一个元素作为前缀，并将其余元素继续全排列。
+新建一个isRepeat空对象，用来判断字符是否重复，若重复则跳过排序。
+ */
+
+function Permutation(str) {
+    var result = [];
+    if(str.length === 0) {
+        return [];
+    }
+    var arr = str.split("");
+    var str2 = "",
+        res = [];
+
+    result = sortString(arr,str2,res);
+    return result;
+}
+
+function sortString(arr,str2,res) {
+    if(arr.length === 0) {
+        res.push(str2);
+    }else {
+        var hash = {};
+        for(var i = 0; i < arr.length; i++) {
+            if(!hash[arr[i]]) {
+                var temp = arr.splice(i,1)[0]; // 截取的数组后的第一个索引元素,其余元素做全排列
+                str2 += temp; // 第i个字符设为前缀
+                sortString(arr,str2,res);
+                arr.splice(i,0,temp); // 补全取出的元素，恢复原字符串
+                str2 = str2.slice(0,str2.length-1); // 清空sortTemp
+                hash[temp] = true;
+            }
+        }
+    }
+    return res;
+}
+console.log(Permutation("123"))

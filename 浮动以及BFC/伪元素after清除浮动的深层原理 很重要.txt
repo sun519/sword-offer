@@ -1,0 +1,43 @@
+<!--
+// 实际上方法三就是方法二的翻版 只不过不用空div改成伪元素而已(见清除浮动的8种方法)
+方法三：伪元素:after 推荐使用(注意区分伪类和伪元素 伪元素标准写法是两个冒号 ::after)  after和before都是伪元素 不是伪类 切记
+伪元素after和before必须配合css中的content使用否则不生效.切记默认content是行内内容,也就是说这里伪元素after是插在
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>清除浮动的8种方法</title>
+
+    <style type="text/css">
+        .div1{background:#000080;border:1px solid red;}
+        .div2{background:#800080;border:1px solid red;height:100px;margin-top:10px}
+        .left{float:left;width:20%;height:200px;background:#DDD}
+        .right{float:right;width:30%;height:80px;background:#DDD}
+        /*清除浮动代码
+        伪类:after 原理和方法二类似;
+        推荐使用
+        /*
+        这么写的原因是什么:
+        content""：css中content是必须配合after写的，规定在after（之后）或者before（之前）插入一些内容，原则上这就是一个行内元素的内容
+        display:block：目的就是将::after行内元素(内容)转换为块级元素(内容)，转换为块级元素后上面元素设置了浮动，此时浮动会遮住当前伪元素的部分区域 但是下面写了一个clear：both的属性之后伪元素就另外起了一行,而父容器看到有一个非浮动、普通流的子元素元素，会将其包围，这样造成了顺便也把三个浮动元素也包裹起来的效果，高度不再塌陷
+        clear:both: 当前元素的左右两侧不允许出现浮动，由于它当旁边的元素有浮动(左侧),它只能另起一行,这样它的左右侧就没有浮动了（clear属性影响的是自己的位置）
+        */
+        /* 有时候在网站上看到这种写法.clearfloat:after{content:"."; display:block; height:0; visibility:hidden; clear:both; }
+        height:0; visibility:hidden;这些代码无非都是为了隐藏掉content里面生成的内容,如果content里面没有内容,完全可以不用写着两个属性
+        content里面之所以要写些内容是因为content 里面内容为空时,firefox直到7.0 content:”" 仍然会产生额外的空隙； （也就是说兼容firefox浏览器的做法）
+        */
+        .clearfloat:after{display:block;clear:both;content:"";} /*ie8以上和非ie浏览器写法*/
+        .clearfloat{zoom:1} /*ie6和ie7写法 zoom为ie专有属性 是放大倍数*/
+    </style>
+</head>
+<body>
+<div class="div1 clearfloat">
+    <div class="left">Left</div>
+    <div class="right">Right</div>
+    <!-- ::after元素其实是插在这里的 -->
+</div>
+<div class="div2"> div2 </div>
+</body>
+</html>
+

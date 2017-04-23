@@ -1,0 +1,27 @@
+方法四：父级div定义 overflow:hidden。（在浮动的父元素写overflow:hidden会触发bfc，从而能消除浮动） 推荐对position和overflow:hidden理解较深的人使用
+overflow:hidden触发BFC从而引起闭合浮动(BFC其高度会扩展至包住其子元素包含浮动元素和其它元素)，计算BFC高度时,其子元素中的浮动元素也会参与计算。依据浮动原理,float元素只会漂移在之前元素的后面（float也会触发bfc详见float的深入理解）。这样就能撑起高度
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>清除浮动的8种方法</title>
+
+	<style type="text/css">
+	/*
+	原理：必须定义width，同时不能使用height,因为使用overflow:hidden时浏览器会自动检查浮动区域的height
+	缺点：不能配合position使用，因为超出尺寸会被隐藏
+	 */
+	.div1{background:#000080;border:1px solid red;/*解决代码*/width:98%;overflow:hidden} 
+	.div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;width:98%} 
+	.left{float:left;width:20%;height:200px;background:#DDD} 
+	.right{float:right;width:30%;height:80px;background:#DDD} 
+	</style> 
+</head>
+<body>
+<div class="div1"> 
+	<div class="left">Left</div> 
+	<div class="right">Right</div> 
+</div> 
+<div class="div2"> div2 </div>
+</body>
+</html>

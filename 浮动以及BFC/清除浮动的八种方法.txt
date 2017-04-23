@@ -1,0 +1,123 @@
+
+方法一:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>清除浮动的8种方法</title>
+
+	<style type="text/css">
+	/* 给设置浮动的div的父级div设置固定高度 
+	缺点：只适合固定高度布局 高度和父级div不一样时，会产生问题  不推荐使用
+	*/
+.div1{background:#000080;border:1px solid red;/*解决代码*/height:200px;} 
+.div2{background:#800080;border:1px solid red;height:100px;margin-top:10px} 
+.left{float:left;width:20%;height:200px;background:#DDD} 
+.right{float:right;width:30%;height:80px;background:#DDD} 
+</style> 
+</head>
+<body>
+<div class="div1"> 
+	<div class="left">Left</div> 
+	<div class="right">Right</div> 
+</div> 
+<div class="div2">div2</div> 
+</body>
+</html>
+
+
+方法二：父div中添加子div加上样式clear:both
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>清除浮动的8种方法</title>
+
+	<style type="text/css">
+	.div1{background:#000080;border:1px solid red} 
+	.div2{background:#800080;border:1px solid red;height:100px;margin-top:10px} 
+	.left{float:left;width:20%;height:200px;background:#DDD} 
+	.right{float:right;width:30%;height:80px;background:#DDD} 
+	/*清除浮动代码
+	原理：父级div内写一个子div写一个clear:both 可以让父级div自动获取高度，这样即可清除浮动;
+	缺点：页面浮动布局较多的情况下 要增加很多空div
+	不推荐使用
+	both:不允许有浮动现象  none：允许两边浮动;
+	*/ 
+
+	.clearfloat{clear:both} 
+	</style> 
+</head>
+<body>
+<div class="div1"> 
+	<div class="left">Left</div> 
+	<div class="right">Right</div> 
+	<div class="clearfloat"></div> 
+</div> 
+<div class="div2"> div2 </div> 
+</body>
+</html>
+
+// 实际上方法三就是方法二的翻版 只不过不用空div改成伪元素而已
+方法三：伪元素:after 推荐使用(注意区分伪类和伪元素 伪元素标准写法是两个冒号 ::after)  after和before都是伪元素 不是伪类 切记
+// 伪元素after和before必须配合css中的content使用否则不生效(默认content是行内内容)()
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>清除浮动的8种方法</title>
+
+	<style type="text/css">
+	.div1{background:#000080;border:1px solid red;} 
+	.div2{background:#800080;border:1px solid red;height:100px;margin-top:10px} 
+	.left{float:left;width:20%;height:200px;background:#DDD} 
+	.right{float:right;width:30%;height:80px;background:#DDD} 
+	/*清除浮动代码
+	伪类:after 原理和方法二类似;
+	推荐使用
+	*/ 
+	// visibility:hidden;height:0其实也可以不写
+	.clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0} /*ie8以上和非ie浏览器写法*/
+	.clearfloat{zoom:1} /*ie6和ie7写法 zoom为ie专有属性 是放大倍数*/
+	</style> 
+</head>
+<body>
+<div class="div1 clearfloat"> 
+	<div class="left">Left</div> 
+	<div class="right">Right</div> 
+</div> 
+<div class="div2"> div2 </div>
+</body>
+</html>
+
+方法四：父级div定义 overflow:hidden。（在浮动的父元素写overflow:hidden会触发bfc，从而能消除浮动） 推荐对position和overflow:hidden理解较深的人使用
+overflow:hidden触发BFC从而引起闭合浮动(BFC其高度会扩展至包住其子元素包含浮动元素和其它元素)，计算BFC高度时,其子元素中的浮动元素也会参与计算。依据浮动原理,float元素只会漂移在之前元素的后面（float也会触发bfc详见float的深入理解）。这样就能撑起高度
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>清除浮动的8种方法</title>
+
+	<style type="text/css">
+	/*
+	原理：必须定义width，同时不能使用height,因为使用overflow:hidden时浏览器会自动检查浮动区域的height
+	缺点：不能配合position使用，因为超出尺寸会被隐藏
+	 */
+	.div1{background:#000080;border:1px solid red;/*解决代码*/width:98%;overflow:hidden} 
+	.div2{background:#800080;border:1px solid red;height:100px;margin-top:10px;width:98%} 
+	.left{float:left;width:20%;height:200px;background:#DDD} 
+	.right{float:right;width:30%;height:80px;background:#DDD} 
+	</style> 
+</head>
+<body>
+<div class="div1"> 
+	<div class="left">Left</div> 
+	<div class="right">Right</div> 
+</div> 
+<div class="div2"> div2 </div>
+</body>
+</html>
+
+方法五、六、七、八：
+父级div定义 overflow:auto/父级div 也一起浮动/父级div定义 display:table /结尾处加 br标签 clear:both
+最后两个方法只做了解

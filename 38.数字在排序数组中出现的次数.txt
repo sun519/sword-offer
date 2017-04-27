@@ -1,0 +1,28 @@
+function GetNumberOfK(data, k){
+    var flag = 0,
+        low = 0,
+        high = data.length - 1;
+    var mid = Math.floor((low + high)/2);
+    if(data.length === 0) {
+        return 0;
+    }
+    // 或者 while(data[mid] !== k) 也可以
+   while(low <= high){    
+        if(k >= data[mid]) {
+            low = mid + 1;
+        }else {
+            high = mid - 1;
+        }
+        mid = Math.floor((low+high)/2);
+         
+    }
+    for(var i = mid; data[i] === k; i++) {
+        flag++;
+    }
+    for(var j = mid-1; data[j] === k; j--) {
+        flag++;
+    }
+    return flag;
+}
+
+console.log(GetNumberOfK([1,2,3,3,5,5],3))

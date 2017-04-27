@@ -1,0 +1,12 @@
+var obj ={
+    a:1,
+    b:function () {
+        alert(this.a)
+    }
+}; 
+var fun =obj.b;
+// 这里fun是在全局函数中运行的,所以this指向调用的对象window
+// 如果想输出1可以这么写fun.call(obj);
+fun();// undefined
+// 这里是obj调用的b函数,函数被谁调用this就指向谁,那么这里this指向obj
+obj.b(); // 1

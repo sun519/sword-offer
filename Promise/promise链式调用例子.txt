@@ -1,0 +1,55 @@
+// Promise链式调用的例子
+// then:成功时的处理  cache:失败时处理
+var num = 0;
+function step1() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            num++; // 此时是奇数
+            if (num % 2 !== 0) {
+                resolve(num); // 是奇数就resolve并把num传过去
+            } else {
+                reject(num); 
+            }
+        }, 1000);
+    });
+}
+
+function step2() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            num += 2; // 此时是奇数
+            if (num % 2 === 0) {
+                resolve(num); // 是偶数就resolve传过去
+            } else {
+                reject(num);
+            }
+        }, 500);
+    });
+}
+
+function step3() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve(); // 直接resolve
+        }, 100);
+    });
+}
+
+step1()
+    .then(function(data) {
+        console.log('resolve: ' + data);
+    }).catch(function(err) {
+        console.log('reject: ' + err);
+    })
+.then(step2)
+    .then(function(data) {
+        console.log('resolve: ' + data);
+    }).catch(function(err) {
+        console.log('reject: ' + err);
+    })
+.then(step3)
+    .then(function() {
+        console.log('成功执行到这儿了');
+    }).catch(function(err) {
+        console.log('错误执行到这儿了');
+    });

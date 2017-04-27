@@ -1,0 +1,16 @@
+/*
+解析:这里考察的知识点是回调的运行机制。
+回调时，被回调的函数会被放在event loop里，等待线程里的任务执行完后才执行event loop里的代码。
+因此，上述代码会先把线程里的console.log('first')执行完后，再执行event loop里的console.log('second')。
+ */ 
+function foo() {
+    console.log("first");
+    setTimeout(function() {
+        console.log("second");
+    },5)
+}
+
+for(var i = 0; i < 3; i++) {
+    foo();
+}
+// 答案 首先全部输出first，然后全部输出second

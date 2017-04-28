@@ -1,10 +1,8 @@
 function TreeDepth(pRoot) {
-    if(pRoot === null) {
-        return 0;
+    if(!pRoot) {
+        return null;
     }
-    if(pRoot) {
-        var left = pRoot.left;
-        right = pRoot.right;
-        return Math.max(TreeDepth(left),TreeDepth(right)) + 1;
-    }   
+    var left = TreeDepth(pRoot.left),
+        right = TreeDepth(pRoot.right);
+    return Math.max(left,right) + 1;
 }

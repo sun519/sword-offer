@@ -1,0 +1,26 @@
+// 类似于双指针
+function FindContinuousSequence(sum) {
+    var low = 1,
+        high = 2,
+        array = [];
+    while(high > low) {
+        // low 千万不要写成1ow 等差数列求和 n(a1 + an)/2
+        var cur = (high + low) * (high -low + 1) / 2;
+        if(cur < sum) {
+            high++;
+        }
+        if(cur === sum) {
+            var arr = [];
+            for(var i = low; i <= high; i++) {
+                arr.push(i);
+            }
+            array.push(arr);
+            low++;
+        }
+        if(cur > sum) {
+            low++;
+        }
+    }
+    return array;
+}
+console.log(FindContinuousSequence(10))

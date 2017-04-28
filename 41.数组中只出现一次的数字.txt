@@ -1,0 +1,33 @@
+// 方法一 indexof和lastIndexof
+function FindNumsAppearOnce(arr) {
+    var arr2 = [];
+    for(var i = 0; i < arr.length; i++) {
+        if(arr.indexOf(arr[i]) === arr.lastIndexOf(arr[i])) {
+            arr2.push(arr[i]);
+        }
+    }
+    return arr2;
+}
+
+
+// 方法二;hash遍历 仅供拓宽思路
+function FindNumsAppearOnce(arr) {
+    var hash = {},
+        arr2 = [];
+    for(var i = 0; i < arr.length; i++) {
+        if(!hash[arr[i]]) {
+            hash[arr[i]] = 1;
+        }else {
+            hash[arr[i]] += 1;
+        }
+    }
+    // Object.keys(object)  获取所有可枚举的属性；并且返回一个数组
+   Object.keys(hash).filter(function(x) {
+        if(hash[x] === 1) {
+            arr2.push(Number(x))
+        }
+   });
+   return arr2;
+}
+
+console.log(FindNumsAppearOnce([2,4,3,6,3,2,5,5]))

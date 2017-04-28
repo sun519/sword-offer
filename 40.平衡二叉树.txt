@@ -1,0 +1,21 @@
+function TreeDepth(pRoot) {
+    if(!pRoot) {
+        return null;
+    }
+    var left = TreeDepth(pRoot.left),
+        right = TreeDepth(pRoot.right);
+    return Math.max(left,right) + 1;
+}
+
+function IsBalanced_Solution(pRoot) {
+    if(pRoot === null) {
+        return true;
+    }
+    var left = TreeDepth(pRoot.left),
+        right = TreeDepth(pRoot.right);
+    var dif = left - right;
+    if(dif > 1 || dif < -1) {
+        return false;
+    }
+    return IsBalanced_Solution(pRoot.left) && IsBalanced_Solution(pRoot.right);
+}

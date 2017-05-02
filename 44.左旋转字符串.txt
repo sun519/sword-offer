@@ -1,0 +1,20 @@
+// S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”
+// 方法一,转换为数组分割再合并
+function LeftRotateString(str, n) {
+    var arr = str.split(""),
+        fir = arr.slice(n),
+        subs = arr.slice(0,n);
+    if(str === null) {
+        return ""
+    }
+    return fir.concat(subs).join("");
+}
+
+
+// 方法二 先拼接两次str再分割。 例:abcXYZdefabcXYZdef，此时slice从n开始截取一直到n+l
+function LeftRotateString(str, n) {
+    if(str === null)return '';
+    var l=str.length;
+    return str.concat(str).slice(n,n+l);
+}
+console.log(LeftRotateString("abcXYZdef", 3));

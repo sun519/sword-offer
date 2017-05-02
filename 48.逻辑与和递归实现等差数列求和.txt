@@ -1,0 +1,21 @@
+/*
+递归和循环有些相似的地方，递归问题都可以用循环来代替，但是在程序的篇幅上和复杂程序上就有一定增加了
+递归和循环一样都是需要一个口停止这个“循环”的过程。
+递归在事先不知道第一个值得时候用，进而一步一步推出要输出的值，而循环式用重复的方法一个个往下执行，一个个得出值，是顺序得出，递归是倒序得出。
+ */
+function Sum_solution(n) {
+    // 逻辑与的短路特性实现了递归的终止,递归到n==0是 ans=0就是false，后面由于(ans += Sum_solution(n-1))不计算了,所以此时递归终止。所以这里就不用写递归终止条件了
+    /*
+    if(n <= 1) {
+        return 1;
+    }
+    */
+    var ans = n;
+    // 逻辑与操作中只要碰到一项为false就跳出来后面就不判断了，如果一直未找到false的值就默认返回最后一个表达式的值
+    // ans == 0时默认为false,返回0。 ans && (ans += Sum_solution(n-1))只执行前面的判断，为false。而后面由于(ans += Sum_solution(n-1))不计算了,所以此时递归终止，然后直接返回0
+    // 当n>0时，逻辑与操作中两项都为真,所以返回最后一个表达式的值。执行sum+=Sum_Solution(n-1)，实现递归计算Sum_Solution(n)。
+    ans && (ans += Sum_solution(n-1));
+    console.log(ans)
+    return ans;
+}
+console.log(Sum_solution(4))

@@ -1,0 +1,65 @@
+﻿/*
+必须满足两个条件
+1. 除0外没有重复的数
+2. max - min < 5
+ */
+// 方法一:位操作
+function IsContinuous(numbers) {
+    if(numbers.length != 5) {
+        return false;
+    }
+    var min = 14,
+        max = -1,
+        flag = 0;
+    for(var i = 0; i < numbers.length; i++) {
+        var num = numbers[i];
+        if(num < 0 || num > 13) {return false;}
+        // 这里0可以看做大小王
+        if(num === 0) {continue;}
+        // 这里&和===相比 ===的优先级更高，所以要加括号
+        // flag右移num为与1做与运算如果等于1说明此前该位曾经标记过,所以该数为重复的数，所以返回false
+        if(((flag >> num) & 1) === 1) {return false;}
+        // 每次遍历到一个数(1带符号右移num位后与flag做或运算)做标记 |=是或运算
+        flag |= (1 << num);
+        if(num > max) {max = num;}
+        if(num < min) {min = num;}
+        if(max - min > 4) {return false;}
+    }
+    return true;
+}
+console.log(IsContinuous([1,2,1,2,5]))
+
+
+
+// 方法二:数组操作
+function IsContinuous(numbers) {
+    var d = [];
+    d[0] = -4;  
+    var len = numbers.length,
+        max = -1, 
+        min = 14;  
+    for(var i =0;i<len;i++) {
+        // 这里其实就是d[0]++,下面两个if就是判断0的个数的
+        d[numbers[i]]++;
+        // 这里d[0]设置初始值=-4,即最多只允许4个0,大于0就是超过4个0了
+        // 这里千万不要与下一个if颠倒顺序，顺序颠倒这个判断就失效了
+        if(d[numbers[i]] > 0) {
+            return false;
+        }
+        // 如果为0做下一次循环  
+        if(numbers[i] == 0){ 
+            continue;  
+        }
+        
+        if(numbers[i] > max) {
+            max = numbers[i];  
+        }if(numbers[i] < min) {
+            min = numbers[i];  
+        }  
+    } 
+    if(max - min < 5) { 
+        return true;  
+    } 
+    return false; 
+}
+console.log(IsContinuous([0,0,0,0,1]))

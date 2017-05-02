@@ -1,0 +1,18 @@
+function FindNumbersWithSum(array, sum){
+   var arr = [];
+   for(var i = 0; i < array.length;i++) {
+       var target = sum - array[i];
+       if(array.indexOf(target) > -1 && array[i] < target) {
+           arr.push(array[i],target);
+       }
+   }
+    return arr.slice(0,2);
+}
+module.exports = {
+    FindNumbersWithSum : FindNumbersWithSum
+};
+/* 这里补充一点，题目中说如果有多对数字的和等于S，输出两个数的乘积最小的。 根据公理在和一定的情况下差值越大乘积越小。
+   又因为这里是一个递增数组,因此若能遍历到目标值,则必然第一个遍历到的数乘积最小,所以我用arr.slice(0,2);即使没遍历到任何数,这么写也会返回空数组
+   题目给的是递增数组，其实这个array[i] < target的限定条件也可以去掉。如果题目说的是一个无序数组，就要用到索引和array[i] < target这个判定条件，
+   本题没必要用索引，更不要用二分查找,二分查找的思路一开始就是错的
+*/

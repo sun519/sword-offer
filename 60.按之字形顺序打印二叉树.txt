@@ -1,0 +1,35 @@
+/* function TreeNode(x) {
+    this.val = x;
+    this.left = null;
+    this.right = null;
+} */
+function Print(pRoot) {
+    if(pRoot === null) {
+        return [];
+    }
+    var result = [],
+        temp = [];
+    temp.push(pRoot);
+    var len;
+    while(temp.length !== 0) {
+        len = temp.length;
+        var i = 0,
+            arr = [];
+        while(i < len) {
+            var root = temp.shift();
+            arr.push(root.val);
+            if(root.left !== null) {
+                temp.push(root.left);
+            }
+            if(root.right !== null) {
+                temp.push(root.right);
+            }
+            i++;
+        }
+        result.push(arr);
+    }
+    for(var i = 1; i < result.length; i = i + 2) {
+        result[i] = result[i].reverse();
+    }
+    return result;
+}

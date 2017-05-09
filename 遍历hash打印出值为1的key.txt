@@ -1,0 +1,16 @@
+var hash = {1:1,2:2,3:1};
+var arr = [];
+
+function t() {
+    for(var item in hash) {
+        if(hash[item] === 1) {
+            arr.push(item);
+        }
+    }
+    if(arr.length > 0) {
+        return arr;
+    }
+    return "#";
+}
+
+console.log(t())

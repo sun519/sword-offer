@@ -1,0 +1,176 @@
+// 原始方法暴力搜索  模式匹配
+function forceSearch(txt, pat) {
+    var M = txt.length;
+    var N = pat.length;
+    for (var i = 0; i <= M - N; i++) {
+        for (var j = 0; j < N; j++) {
+            if (txt.charAt(i + j) != pat.charAt(j))
+                break;
+        }
+        if (j == N)
+            return i;
+    }
+    return -1;
+}
+
+var txt = "BBC ABCDAB AACDABABCDABCDABDE";
+var pat = "ABCD";
+console.log(forceSearch(txt, pat))
+
+
+// KMP算法
+// 产生部分匹配值("部分匹配值"就是"前缀"和"后缀"的最长的共有元素的长度)，生成部分匹配表
+/* 首先，要了解两个概念："前缀"和"后缀"。 "前缀"指除了最后一个字符以外，一个字符串的全部头部组合；"后缀"指除了第一个字符以外，一个字符串的全部尾部组合。
+   例:"ABCDAB"的前缀为[A, AB, ABC, ABCD, ABCDA]，后缀为[BCDAB, CDAB, DAB, AB, B]，共有元素为"AB"，长度为2。
+   得到"ABCDAB"的部分匹配表为[-1,0,0,0,0,1],这里-1表示不存在，0表示存在长度为1，1表示存在长度为2。这是为了和代码相对应
+*/
+
+function getNext(pat, next) {
+    var i = 0,
+        j = -1;
+    next[0] = -1;
+    // 因为数组初值已经有一个值,所以这里要pat.length-1
+    while(i < pat.length-1) {
+        if(j == -1 || pat.charAt(i) == pat.charAt(j)) {
+            i++;
+            j++;
+            next[i] = j;
+        }else {
+            j = next[j];
+        }
+    }
+}
+
+function KMPSearch(txt, pat, next) {
+    var M = txt.length,
+        N = pat.length,
+        i = 0,
+        j = 0;
+    while(i < M && j < N) {
+        if (j == -1 || txt.charAt(i) == pat.charAt(j)) {
+            i++;
+            j++;
+        }else {
+            // 部分匹配表的值就是移动位数赋值给j
+            j = next[j];
+        }
+    }
+    // 如果j的值等于该模式匹配串的长度,返回模式匹配串第一个字符的索引
+    if(j == N) {
+        return i - j;
+    }        
+    return -1;
+}
+
+var txt = "BBC ABCDAB AACDABABCDABCDABDE";
+var pat = "ABCDAB";
+var next = [];
+getNext(pat, next);
+console.log(KMPSearch(txt, pat, next))
+
+
+// BM算法实现(编辑器的文本搜索以及Google V8引擎的搜索都是用该算法实现) 推荐使用！！
+// 参考链接http://stylechen.com/boyer-moore.html?utm_source=tuicool&utm_medium=referral
+var boyerMoore = function( content, pattern, fromIndex ){
+    var cLen = content.length,
+        pLen = pattern.length,
+        i = pLen - 1,
+        badCharMap = {},
+        goodSuffixMap = {},
+        index, item, suffix, pre, j;
+    fromIndex = fromIndex || i;
+    for( ; i > 0; i-- ){
+        item = pattern[i];
+        // 创建坏字符规则表
+        if( badCharMap[item] === undefined ){
+            badCharMap[ item ] = i;
+        }
+        // 创建好后缀规则表
+        suffix = pattern.slice( i );
+        pre = pattern.slice( 0, i );
+        if( suffix.length <= pre.length ){
+            for( j = pre.length - 1; j >= 0; j-- ){
+                item = pre.slice( j - suffix.length + 1, j + 1 );
+                if( suffix === item ){
+                    if( goodSuffixMap[suffix] === undefined ){
+                        goodSuffixMap[suffix] = j - suffix.length + 1;
+                    }
+                }
+            }
+        }
+    }
+    var search = function( lastIndex ){
+        var i = pLen - 1,   // 搜索字符串的索引标记
+            j = lastIndex,  // 被搜索字符串的索引标记
+            g = 0,  // 标记好后缀的长度
+            badChar, goodSuffix, goodSuffixMove, badCharMove, badCharIndex, goodSuffixIndex;
+        for( ; i > 0; i-- ){
+            badChar = content[j];
+            if( badChar === pattern[i] ){
+                g++;
+            }
+            else{
+                // 需要查找坏字符在搜索词上一次（lastIndexOf从右往左查找）的出现为止
+                badCharIndex = badCharMap[ badChar ];
+                if( badCharIndex === undefined ){
+                    badCharIndex = -1;
+                }
+                badCharMove = i - badCharIndex;
+                if( badCharMove <= 0 ){
+                    badCharMove = 1;
+                }
+                // 如果存在好后缀，则计算好后缀可以移动的位置
+                if( g ){
+                    for( i = g; i > 0; i-- ){
+                        goodSuffix = pattern.slice( 0 - i );
+                        if( goodSuffix in goodSuffixMap ){
+                            goodSuffixIndex = goodSuffixMap[ goodSuffix ];
+                            goodSuffixMove = pLen - i - goodSuffixIndex;
+                            break;
+                        }
+                    }
+                    if( goodSuffixIndex === undefined ){
+                        goodSuffixMove = pLen - g - 1;
+                    }
+                    // 取坏字符和好后缀规则中移动位数最大者
+                    lastIndex += Math.max( goodSuffixMove, badCharMove );
+                }
+                else{
+                    lastIndex += badCharMove;
+                }
+            /* 测试代码 start
+                console.log( content );
+                for( var i = 0, space = '', len = lastIndex - pLen + 1; i < len; i++ ){
+                    space += ' ';
+                }
+                console.log( space + pattern );
+                console.log( lastIndex );
+                console.log( '-----------------------------' );
+                测试代码 end */
+                break;
+            }
+            j--;
+        }
+        if( pLen - 1 !== g ){
+            // 已到末尾
+            if( lastIndex + 1 > cLen ){
+                index = -1;
+            }
+            // 没到末尾将继续搜索
+            else{
+                search( lastIndex );
+            }
+        }
+        // 完全匹配
+        else{
+            index = lastIndex + 1 - pLen;
+        }
+    };
+    search( fromIndex );
+    return index;
+};
+var content = 'here is a simple example';
+var query = 'example';
+var index = boyerMoore( content, query );
+console.log( 'boyerMoore : ' + index );
+console.log( 'indexOf : ' + content.indexOf(query) );

@@ -6,7 +6,7 @@ var judge = function(o) {
     if(o === undefined) {
         return "Undefined";
     }
-    // 即取出除了“[object ”的字符串。 例:如“[object Array]”,截取的就是Array,slice中第二个参数如果是负数，那么是从数组尾部开始算起的元素。这里的-1就是“[object Array]”中的y
+    // 即取出除了“[object ”的字符串。 例:如“[object Array]”,截取的就是Array,slice中第二个参数如果是负数，那么是从数组尾部开始算起的截止元素（不包含当前截止元素）。这里的-1就是“[object Array]”中的y
     return Object.prototype.toString.call(o).slice(8,-1);
 }
 

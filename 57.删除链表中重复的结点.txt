@@ -1,0 +1,28 @@
+function ListNode(x){
+    this.val = x;
+    this.next = null;
+}
+
+function deleteDuplication(pHead) {
+    // 只有0个或1个结点，则返回
+    if(pHead === null || pHead.next === null) {
+        return pHead;
+    }
+    var p = pHead;
+    // 当前结点是重复结点
+    if(pHead.val === p.next.val) {
+        p = p.next.next;
+        // 如果p不为空且p.next.next的val仍然等于pHead的val,则继续跳过
+        while(p !== null && p.val === pHead.val) {
+            p = p.next;
+        }
+        // 从第一个与当前结点不同的结点开始递归
+        return deleteDuplication(p)
+    // 当前结点不是重复结点
+    }else {
+        p = pHead.next;
+        // 保留当前结点，从下一个结点开始递归
+        pHead.next = deleteDuplication(p);
+        return pHead;
+    }
+}

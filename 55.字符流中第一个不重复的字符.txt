@@ -1,0 +1,22 @@
+function Init() {
+    var hash = {};
+    // global的用意是将变量提升到全局变量
+    global.hash = hash;
+}
+
+function Insert(ch) {
+    if(hash[ch]) {
+        hash[ch]++;
+    }else {
+        hash[ch] = 1;
+    }
+}
+
+function FirstAppearingOnce() {
+    for(var item in hash) {
+        if(hash[item] === 1) {
+            return item;
+        }
+    }
+    return "#";
+}

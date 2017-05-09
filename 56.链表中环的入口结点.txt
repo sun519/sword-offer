@@ -1,0 +1,22 @@
+function ListNode(x){
+    this.val = x;
+    this.next = null;
+}
+//利用flag标记访问过的node节点
+function EntryNodeOfLoop(pHead) {
+    var p = pHead;
+    p.visited = true;
+    if(pHead === null) {
+        return null;
+    }
+    while(p.next !== null) {
+        if(p.next.visited === true) {
+            return p.next;
+        }else {
+            p = p.next;
+            p.visited = true;
+        }
+    }
+    // 没有环的情况
+    return null;
+}

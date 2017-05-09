@@ -1,0 +1,8 @@
+function match(s, pattern)
+{
+    // write code here
+    var pattern = '^'+pattern +'$';
+    // 这里不new的话上面是一个字符串
+    var pat = new RegExp(pattern,'g');
+    return pat.test(s);
+}

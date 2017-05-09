@@ -1,0 +1,7 @@
+function StrToInt(str) {
+    var s = Number(str);
+    if(!s) {
+        return 0;
+    }
+    return s
+}

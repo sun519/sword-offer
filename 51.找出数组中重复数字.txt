@@ -1,0 +1,15 @@
+function duplicate(nums) {
+    var hash = {},
+        arr = [];
+    for(var i = 0; i < nums.length; i++) {
+        if(!hash[nums[i]]) {
+            hash[nums[i]] = true;
+        }else {
+            arr.push(nums[i]);
+        }
+    }
+    if(arr.length === 0) {
+        return falsel
+    }
+    return arr;
+}

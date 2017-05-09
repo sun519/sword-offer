@@ -1,0 +1,11 @@
+function isNumeric(s) {
+    var t = Number(s);
+    return t;
+    if(t === 0) {
+        return 0;
+    }
+    if(!t) {
+        return false;
+    }
+    return t;
+}

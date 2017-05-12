@@ -1,0 +1,39 @@
+var arr = [];
+function Insert(num) {
+    arr.push(num);
+    var up = function(a,b) {
+        return a - b;
+    }
+    arr.sort();      
+}
+function GetMedian() {
+    var len = arr.length;
+    // 按位与,如果是偶数,它的二进制第一位必然是0,0与1相与结果是0
+    if((len & 1) === 0) {
+        return (arr[len/2] + arr[len/2-1])/2;
+    }else {
+        return arr[Math.floor(len/2)];
+    }
+}
+
+/*
+// 冒泡排序
+function bubble(arr) {
+    var flag,temp;
+    for(var i = arr.length; i > 0; i--) {
+        flag = 0;
+        for(var j = 0; j < i; j++) {
+            if(arr[j] > arr[j+1]) {
+                temp = arr[j+1];
+                arr[j+1] = arr[j];
+                arr[j] = temp;
+                flag = 1;
+            }
+        }
+        if(flag === 0) {
+            return arr;
+        }
+    }
+}
+console.log(bubble([4,2,3,1]));
+*/

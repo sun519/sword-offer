@@ -1,0 +1,39 @@
+// 方法一 回退机制
+function maxInWindows(num, size) {
+    var arr = [];
+    if(num === null || size > num.length || size <= 0) {
+        return [];
+    }
+    var flag = 0;
+    var max = num[0];
+    for(var i = 0; i < num.length; i++) {
+        flag++;
+        if(max < num[i]) {
+            max = num[i];
+        }
+        if(flag === size) {
+            arr.push(max);
+            i = i - size + 1;
+            max = num[i+1];
+            flag = 0;
+        }
+    }
+    return arr;
+}
+console.log(maxInWindows([2,3,4,2,6,2,5,1],3))
+
+
+// 方法二 利用apply
+function maxInWindows(num, size) {
+    var arr = [];
+    // 这里写写num.length-size+1;目的是遍历到倒数第size个数时后长度小于size下面一层for循环会push出undefind,此时再调用Math.max.apply会显示NaN
+    for(var i = 0; i < num.length-size+1; i++) {
+        var temp = [];
+        for(var j = 0; j < size; j++) {
+            temp.push(num[i+j]);
+        }
+        arr.push(Math.max.apply(null,temp));
+    }
+    return arr;
+}
+console.log(maxInWindows([2,3,4],3))

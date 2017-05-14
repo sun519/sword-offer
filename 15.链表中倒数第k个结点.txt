@@ -25,3 +25,124 @@ function findKthToTail(head,k) {
     }
     return p2;
 }
+
+
+// 包含创建链表的完整写法
+// 定义Node类表示节点 val用来保存节点数据,next用来指向下一个节点链接
+function Node(val) {
+    this.val = val;
+    this.next = null;
+}
+
+// 定义LList类提供了对链表进行操作的方法 例如查找插入显示等(这里定义的是一个带头节点的单链表,头结点的val值是h)
+function LList() {
+    // 定义一个头节点,头结点的val值是head
+    this.head = new Node("h");
+}
+// 查找方法
+LList.prototype.find = function(item) {
+    var curNode = this.head;
+    while(curNode.val != item) {
+        curNode = curNode.next;
+    }
+    return curNode;
+}
+// 插入
+LList.prototype.insert = function(newVal, item) {
+    // 定义可选参数par_item,因为par_item参数时第二个设置的,所以写arguments[1]
+    var par_item = arguments[1] ? arguments[1] : null;
+    var newNode = new Node(newVal);
+    // 如果调用insert方法时未写par_item,则默认从链表的最后一个节点开始插入
+    if(par_item === null) {
+        var current = this.head;
+        // 插入点用while来判断,如果当前链表的节点的next是null,则该节点必然是当前链表的最后一个节点
+        while(current.next !== null) {
+            current = current.next;
+        }
+        newNode.next = current.next;
+        current.next = newNode;
+        //console.log(newNode.val)
+        return;  
+    }
+    // 如果调用insert方法时写item时的调用
+    var current = this.find(item);
+    newNode.next = current.next;
+    current.next = newNode;
+    //console.log(newNode.val)
+}
+// 显示
+LList.prototype.display = function() {
+    var curNode = this.head;
+    while(curNode.next !== null) {
+        console.log(curNode.next.val);
+        curNode = curNode.next;
+    }
+}
+// 查找上一个节点,这里一般配合删除节点用
+LList.prototype.findPrevious = function(item) {
+    var current = this.head;
+    // 当current.next.val === item时跳出循环,此时item的前驱节点就是current
+    //while(current.next.val !== item && current.next !== null) {
+    while(current.next.val !== item && current.next !== null) {
+        current = current.next;
+    }
+    return current;
+}
+// 删除
+LList.prototype.remove = function(item) {
+    var prevNode;
+    var item = arguments[0] ? arguments[0] : null;
+    // 如果调用remove方法时未写item参数,则默认从链表的最后一个节点开始删除
+    if(item === null) {
+        // 遍历出链表的最后一个节点
+        var cur = this.head;
+        while(cur.next !== null) {
+            cur = cur.next;
+        }
+        // 将最后一个节点的val值赋值给item。这里cur是节点而不是值,所以获取值要写成cur.val
+        item = cur.val;
+        prevNode = this.findPrevious(item);
+        if(prevNode.next !== null) {
+            prevNode.next = prevNode.next.next;
+            return;
+        }
+    }
+    // 如果调用remove方法时写item时的调用
+    prevNode = this.findPrevious(item);
+    if(prevNode.next !== null) {
+        prevNode.next = prevNode.next.next;
+        return;
+    }
+}
+
+var pHead = new LList();
+var arr = [1,2,3,4,5,6];
+for(var i = 0; i < arr.length; i++) {
+    pHead.insert(arr[i]);
+}
+console.log(pHead);
+pHead.display();
+
+// 上面定义的是带头节点的单链表
+function findKthToTail(linklist,k) {
+    if(linklist === null || k < 0) {
+        return false;
+    }
+    var p1 = linklist.head,
+        p2 = linklist.head;
+    for(var i = 0; i < k-1; i++) {
+        if(p1.next != null) {
+            p1 = p1.next;
+        }else {
+            return false;
+        }
+    }
+    while(p1.next != null) {
+        p1 = p1.next;
+        p2 = p2.next;
+    }
+    // 返回此节点。要是返回节点值可以写成return p2.val
+    return p2;
+}
+
+console.log(findKthToTail(pHead,2));

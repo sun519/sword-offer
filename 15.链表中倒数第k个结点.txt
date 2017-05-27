@@ -36,7 +36,7 @@ function Node(val) {
 
 // 定义LList类提供了对链表进行操作的方法 例如查找插入显示等(这里定义的是一个带头节点的单链表,头结点的val值是h)
 function LList() {
-    // 定义一个头节点,头结点的val值是head
+    // 定义一个头节点,头结点的val值是h
     this.head = new Node("h");
 }
 // 查找方法

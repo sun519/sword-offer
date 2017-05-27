@@ -1,0 +1,58 @@
+// 默写参考代码实现
+function kmpMatch(str) {
+    var pre = [],
+        end = [],
+        mat = [];
+    for(var i = 0; i < str.length; i++) {
+        var newStr = str.substring(0,i+1);
+        if(newStr.length == 1) {
+            mat[i] = 0;
+        }
+        for(var j = 0; j < i; j++) {
+            pre[j] = newStr.slice(0,j+1);
+            end[j] = newStr.slice(-(j+1));
+            if(pre[j] == end[j]) {
+                mat[i] = pre[j].length;
+            }
+        }
+        if(mat[i] === undefined) {
+            mat[i] = 0;
+        }
+    }
+    return mat;
+}
+var t="ABCDABD";
+console.log(kmpMatch(t));
+
+// 参考代码
+function kmpGetStrPartMatchValue(str) {
+    var prefix = [];
+    var suffix = [];
+    var partMatch = [];
+    for(var i=0,j=str.length;i<j;i++){
+        var newStr = str.substring(0,i+1);
+        if(newStr.length == 1){
+            partMatch[i] = 0;
+        } else {
+            for(var k=0;k<i;k++){
+                prefix[k] = newStr.slice(0,k+1);
+                suffix[k] = newStr.slice(-k-1);
+                // 这里比较的是数组而不是数组里面的值(千万不要理解错了)
+                if(prefix[k] == suffix[k]){
+                    partMatch[i] = prefix[k].length;
+                }
+            }
+            if(!partMatch[i]){
+                partMatch[i] = 0;
+            }
+        }
+    }
+    prefix.length = 0;
+    suffix.length = 0;
+    return partMatch;
+}
+
+//demo
+var t="ABCDABD";
+console.log(kmpGetStrPartMatchValue(t));
+//output:[0,0,0,0,1,2,0]

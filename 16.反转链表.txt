@@ -24,7 +24,6 @@ console.log(ReverseList({1,2,3,4,5}))
 
 
 
-//实际测试写法 包含创建链表
 // 定义Node类表示节点 val用来保存节点数据,next用来指向下一个节点链接
 function Node(val) {
     this.val = val;
@@ -69,11 +68,14 @@ LList.prototype.insert = function(newVal, item) {
 }
 // 显示
 LList.prototype.display = function() {
+    var res = [];
     var curNode = this.head;
     while(curNode.next !== null) {
         console.log(curNode.next.val);
+        res.push(curNode.next.val);
         curNode = curNode.next;
     }
+    return res;
 }
 // 查找上一个节点,这里一般配合删除节点用
 LList.prototype.findPrevious = function(item) {
@@ -111,15 +113,6 @@ LList.prototype.remove = function(item) {
         return;
     }
 }
-
-// 创建一个链表实例
-var pHead = new LList();
-var arr = [1,2,3,4,5,6];
-for(var i = 0; i < arr.length; i++) {
-    pHead.insert(arr[i]);
-}
-console.log(pHead);
-pHead.display();
 
 // 反转链表函数
 function ReverseList(linklist) {

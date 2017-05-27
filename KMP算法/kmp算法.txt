@@ -1,0 +1,56 @@
+// 生成部分匹配表
+function kmpMatch(str) {
+    var pre = [],
+        end = [],
+        mat = [];
+    for(var i = 0; i < str.length; i++) {
+        var newStr = str.substring(0,i+1);
+        if(newStr.length == 1) {
+            mat[i] = 0;
+        }
+        for(var j = 0; j < i; j++) {
+            pre[j] = newStr.slice(0,j+1);
+            end[j] = newStr.slice(-(j+1));
+            if(pre[j] == end[j]) {
+                mat[i] = pre[j].length;
+            }
+        }
+        if(mat[i] === undefined) {
+            mat[i] = 0;
+        }
+    }
+    return mat;
+}
+var t="ABCDABD";
+console.log(kmpMatch(t));
+
+
+// 回退过程
+function KMP(sourceStr,targetStr){
+    var partMatchValue = kmpMatch(targetStr);
+    var result = false;
+    var matchLen = 0;
+    for(var i=0; i < sourceStr.length; i++){
+        for(var j=0; j < targetStr.length; j++){
+            if(targetStr.charAt(j) == sourceStr.charAt(i+j)){
+                if(j == targetStr.length-1){
+                    result = true;
+                    break;
+                }
+                matchLen++;
+            } else {
+                if(j > 0 && partMatchValue[j-1] > 0){
+                    i += (matchLen-partMatchValue[j-1]-1);
+                }
+                break;
+            }
+        }
+        if(result){
+            break;
+        }
+    }
+    return result;
+}
+var s = "BBC ABCDAB ABCDABDDABDE";
+var t = "ABCDABD";
+console.log(KMP(s,t));
